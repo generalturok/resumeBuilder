@@ -87,30 +87,25 @@ bio.display = function() {
         formattedPhoto = HTMLbioPic.replace("%data%", bio.biopic),
         formattedWelcomeMsg = HTMLwelcomeMsg.replace("%data%", bio.welcomeMessage);
     //formatted Contacts Info
-    var formattedContactInfo = [];
-        formattedContactInfo = HTMLemail.replace("%data%", bio.contacts.email),
-        formattedContactInfo = HTMLgithub.replace("%data%", bio.contacts.github),
-        formattedContactInfo = HTMLlocation.replace("%data%", bio.contacts.location);
+    var formattedEmail = HTMLemail.replace("%data%", bio.contacts.email),
+        formattedGithub = HTMLgithub.replace("%data%", bio.contacts.github),
+        formattedLocation = HTMLlocation.replace("%data%", bio.contacts.location);
+
     //prepend & append into header
     $("#header").prepend(formattedName);
     $("#header").prepend(formattedRole);
     $("#header").append(formattedPhoto);
     $("#header").append(formattedWelcomeMsg);
     //prepend footer
-    $("#footerContacts").prepend(formattedName);
-    $("#footerContacts").prepend(formattedRole);
-    //for loop//
-    if (bio.skills.length > 0) {
-    $("#topContacts").append(HTMLskillsStart);
-    for (skill in bio.skills) {
-        if (bio.skills.hasOwnProperty(skill)) {
-            formattedSkill = HTMLskills.replace("%data%", bio.skills[skill]);
-            $("#skills").append(formattedSkill);
-        }
-    }
-}
-};
 
+    $("#topContacts, #footerContacts").append(formattedEmail, formattedGithub, formattedLocation);
+    //for loop//
+    $("#header").append(HTMLskillsStart)
+    for (var i = 0; i < bio.skills.length; i++) {
+            var formattedSkills = HTMLskills.replace("%data%", bio.skills[i]);
+            $("#skills").append(formattedSkills);
+        }
+};
 //education function
 education.display = function() {
     education.schools.forEach(function(school) {
@@ -174,10 +169,16 @@ projects.display = function() {
         $(".project-entry:last").append(formattedProjectDate);
         var formattedProjectDescription = HTMLprojectDescription.replace("%data%", projects.description);
         $(".project-entry:last").append(formattedProjectDescription);
-        var formattedProjectImage = HTMLprojectImage.replace("%data%", projects.images);
-        $(".project-entry:last").append(formattedProjectImage);
-    });
+
+        if (project.images.length > 0) {
+            project.images.forEach(function(image) {
+                var formattedProjectImage = HTMLprojectImage.replace("%data%", image);
+                $(".project-entry:last").append(formattedProjectImage);
+            });
+          }
+        });
 };
+
 
 //find the location and traffic on the website
 //$(document).click(function(loc) {
